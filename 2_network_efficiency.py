@@ -32,6 +32,7 @@ def load_network_from_excel(path, sheet_name='Sheet1'):
 
 def plot_efficiency_curves(G, node_orders, labels):
     results = [efficiency_over_removal(G, order) for order in node_orders]
+    max_nodes = max(len(order) for order in node_orders)  # 获取最大节点数
 
     plt.figure(figsize=(8, 6))
     for i, values in enumerate(results):
@@ -39,8 +40,13 @@ def plot_efficiency_curves(G, node_orders, labels):
 
     plt.xlabel('Number of Removed Nodes', fontsize=16)
     plt.ylabel('Network Efficiency', fontsize=16)
-    plt.xticks(fontsize=14)
-    plt.yticks(fontsize=14)
+    
+    # 设置横坐标刻度间隔为5
+    plt.xticks(np.arange(0, max_nodes+1, 5), fontsize=14)
+    
+    # 设置纵坐标刻度间隔为0.1，范围0-0.5
+    plt.yticks(np.arange(0, 0.51, 0.1), fontsize=14)
+    plt.ylim(0, 0.5)  # 设置Y轴范围
 
     plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2,
                frameon=False, prop={'family': 'Times New Roman', 'size': 14})
@@ -66,11 +72,11 @@ if __name__ == '__main__':
     ]
 
     labels = [
-        'Degree-based interference',
-        'Betweenness-based interference',
-        'Closeness-based interference',
-        'Random-based interference',
-        'Reachability-based interference'
+        'Degree-based disturbance',
+        'Betweenness-based disturbance',
+        'Closeness-based disturbance',
+        'Random-based disturbance',
+        'Reachability-based disturbance'
     ]
 
     plot_efficiency_curves(G, node_orders, labels)
